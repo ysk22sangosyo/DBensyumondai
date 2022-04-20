@@ -3,9 +3,9 @@ CREATE DATABASE tangenkadaidb;
 
 --レシートテーブル作成
 CREATE TABLE reciet(
-    company_id int PRIMARY KEY,
+    company_id int REFERENCES company(company_id) ,
     shop_id int REFERENCES shop(shop_id),
-    slip_no int REFERENCES reciet_detail(slip_no) ,
+    slip_no int PRIMARY KEY ,
     hiduke date,
     zikoku time,
     responsible_no int REFERENCES manager(responsible_no),
@@ -13,7 +13,7 @@ CREATE TABLE reciet(
 );
 --レシート明細テーブル作成
 CREATE TABLE reciet_detail(
-    slip_no int PRIMARY KEY,
+    slip_no int REFERENCES reciet(slip_no),
     item_id int REFERENCES item(item_id),
     discount DECIMAL
 );
@@ -34,7 +34,7 @@ CREATE TABLE taxrate(
 
 --会社テーブル作成
 CREATE TABLE company(
-company_id int REFERENCES reciet(company_id),
+company_id int PRIMARY KEY,
 company_name VARCHAR(100)
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE manager(
     manager_name VARCHAR(100),
     position_id int REFERENCES position(position_id),
     manager_old int,
-    manager_sex int
+    manager_sex VARCHAR(3)
 );
 
 --役職テーブル作成
@@ -87,7 +87,7 @@ CREATE TABLE position(
 
 --支払内訳テーブル作成
 CREATE TABLE breakdown(
-    slip_no int REFERENCES reciet_detail(slip_no),
+    slip_no int REFERENCES reciet(slip_no),
     breakdown int,
     pay_id int REFERENCES pay(pay_id)
 );
